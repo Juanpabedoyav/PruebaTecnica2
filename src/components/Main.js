@@ -1,10 +1,10 @@
 import { Formik, Form,Field } from 'formik';
 import React, { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { busqueda, getInfoPrecioMayor, getInfoPrecioMenor } from '../Redux/action/filtroAction';
+import { busqueda, BusquedaProducto, getInfoPrecioMayor, getInfoPrecioMenor } from '../Redux/action/filtroAction';
 import {getInfoA } from '../Redux/action/getDataAction';
 
-import { MainStyle } from '../styles/Main.style';
+import { MainStyle, StyleFiltros } from '../styles/Main.style';
 
 const Main = () => {
 
@@ -14,56 +14,60 @@ const {filtro} = useSelector(state => state.filtro)
 // const {data}= state
 // const [inf, setInf] = useState()
 
-
-const cargarDatos= ()=>{
+useEffect(() => {
     dispatch(getInfoA())
-    // console.log(data.map(el=> el.nombre))
 
-}
+}, [dispatch])
+// const cargarDatos= ()=>{
+//     dispatch(getInfoA())
+//     // console.log(data.map(el=> el.nombre))
+
+// }
     
 
 
 
 const menorPrecio =()=>{
 dispatch(getInfoPrecioMenor())
-console.log(filtro)
 }
 
 const mayorPrecio =()=>{
     dispatch(getInfoPrecioMayor())
 }
-// const cargarDatos = ()=>{
-//     console.log(state.data)
-   
-// }
+
     return (
 <>
-<MainStyle>
- 
- <form>   
-    <input type="text" 
+<StyleFiltros>
+
+ <Formik
+ initialValues={{
+     nombre:'',
+ }}
+onSubmit={
+    (valores)=>{dispatch(BusquedaProducto(valores.nombre))}
+}
+ >
+ <Form>   
+    <Field type="text" 
     name='nombre'
-    // value={}
-/>    
-</form>
-  <button onClick={()=>menorPrecio()}>menor precio</button>
+    
+/>  
+<button type='submit'>buscar</button>  
+</Form>
+
+</Formik>
+
+<button  style={{margin:'10px'}}onClick={()=>menorPrecio()}>menor precio</button>
   <button onClick={()=>mayorPrecio()}>mayor precio</button>
- 
+  </StyleFiltros>
 
-        
-<button onClick={()=>cargarDatos()}>Cargar data</button>
-<div className="card">
-                <div className="img">
-                <img src='' alt="" />
-                </div>
-             <div className="info">
-             <h1 className='name-producto '></h1>
-             <h1 className='price-product'></h1>
-             </div>
 
-         </div>
-
-{data.map((el)=> (
+  <MainStyle>
+{
+data===undefined?
+(<br></br>):
+(
+    data.map((el)=> (
 
         <div className="card">
                 <div className="img">
@@ -77,9 +81,14 @@ const mayorPrecio =()=>{
          </div>
 
 ))
+)
 }   
-{filtro.map((ele)=> (
+{
+filtro=== undefined?
+(<br></br>):
 
+(
+filtro.map((ele)=> (
 <div className="card">
         <div className="img">
         <img style={{alignItems:'center'}}src={ele.imagen} alt="" />
@@ -90,9 +99,11 @@ const mayorPrecio =()=>{
      </div>
     <button className='comprar'>Comprar</button>
  </div>
-
 ))
-} 
+
+)
+}  
+
 </MainStyle>
 </>
     )

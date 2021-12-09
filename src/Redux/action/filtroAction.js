@@ -1,6 +1,7 @@
 import { getDocs, collection, query, where } from "firebase/firestore";
 import { db } from "../../firebase/firebase";
 import { types } from "../types/types";
+import { getInfoS } from "./getDataAction";
 
 const filtracion = (data)=>{
  return{
@@ -20,7 +21,7 @@ const filtracion = (data)=>{
   if(doc.data().precio < 200){
             menorPrice.push(doc.data());
             // console.log
-            dispatch(filtracion(menorPrice))
+            dispatch(getInfoS(menorPrice))
             
         }     
     })
@@ -40,7 +41,7 @@ export const getInfoPrecioMayor = () => {
 if(doc.data().precio > 200){
     mayorPrice.push(doc.data());
         // console.log
-        dispatch(filtracion(mayorPrice))
+        dispatch(getInfoS(mayorPrice))
         
     }     
 })
@@ -49,22 +50,24 @@ if(doc.data().precio > 200){
  }
       
 }      
+export const BusquedaProducto = (nombre) => {
+  return async (dispatch) => {
+    const docRef = collection(db, "products");
+    const getData = await getDocs(docRef);
+    const busqueda=[]
+    console.log(getData)
+    getData.forEach((doc)=>{
+if(doc.data().nombre === nombre){
+  busqueda.push(doc.data());
+      // console.log
+      dispatch(getInfoS(busqueda))
+      
+  }     
+})
+console.log(busqueda)
 
-
-
-
-    //   export const busqueda = (nombre) => {
-  
-    //     return async( ) => { 
-    //         const productos = collection(db,"products");
-    //         const q = query(productos,where("precio","==",nombre))
-    //         const datos = await getDocs(q);
-    //         //console.log(datos)
-    //         const item = [];
-    //         datos.forEach((docu) => {
-    //             item.push(docu.data())
-    //         }) 
-    //         console.log(item)
-    //     }
-    // }
+}
     
+}
+
+

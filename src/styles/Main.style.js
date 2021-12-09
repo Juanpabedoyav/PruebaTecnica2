@@ -44,4 +44,17 @@ export const MainStyle = styled.div`
     margin: 0 auto;
     margin-bottom: 20px;
 }
+
+`
+
+export const StyleFiltros = styled.div`
+    
+    /* border: 1px solid red; */
+    width: 350px;
+    button{
+        background-color: black;
+    color: white;
+        font-weight: 800;
+    }
+
 `
