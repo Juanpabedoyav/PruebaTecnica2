@@ -1,5 +1,6 @@
 import { createStore, combineReducers, compose, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
+import { filtroReducer } from "../reducers/filtroReducer";
 import { getDataReducer } from "../reducers/getDataReducer";
 
 const composeEnhancers =
@@ -9,6 +10,7 @@ const composeEnhancers =
 
 const reducers = combineReducers({
   data: getDataReducer,
+  filtro: filtroReducer,
 });
 
 export const store = createStore(

@@ -1,35 +1,36 @@
 import { Formik, Form,Field } from 'formik';
 import React, { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { busqueda, getInfoA, getInfoPrecio } from '../Redux/action/getDataAction';
+import { busqueda, getInfoPrecioMayor, getInfoPrecioMenor } from '../Redux/action/filtroAction';
+import {getInfoA } from '../Redux/action/getDataAction';
+
 import { MainStyle } from '../styles/Main.style';
 
 const Main = () => {
 
 const dispatch = useDispatch();
 const {data} = useSelector(state => state.data)
+const {filtro} = useSelector(state => state.filtro)
 // const {data}= state
 // const [inf, setInf] = useState()
 
 
 const cargarDatos= ()=>{
     dispatch(getInfoA())
-    console.log(data.map(el=> el.nombre))
+    // console.log(data.map(el=> el.nombre))
 
 }
     
-// const stateInfo = (state)=>{
-//     setInf(state);
-//     console.log(inf)
-// } 
+
 
 
 const menorPrecio =()=>{
-cargarDatos()
-dispatch(getInfoPrecio())
+dispatch(getInfoPrecioMenor())
+console.log(filtro)
 }
 
 const mayorPrecio =()=>{
+    dispatch(getInfoPrecioMayor())
 }
 // const cargarDatos = ()=>{
 //     console.log(state.data)
@@ -51,7 +52,7 @@ const mayorPrecio =()=>{
 
         
 <button onClick={()=>cargarDatos()}>Cargar data</button>
-{/* <div className="card">
+<div className="card">
                 <div className="img">
                 <img src='' alt="" />
                 </div>
@@ -60,7 +61,7 @@ const mayorPrecio =()=>{
              <h1 className='price-product'></h1>
              </div>
 
-         </div> */}
+         </div>
 
 {data.map((el)=> (
 
@@ -77,6 +78,21 @@ const mayorPrecio =()=>{
 
 ))
 }   
+{filtro.map((ele)=> (
+
+<div className="card">
+        <div className="img">
+        <img style={{alignItems:'center'}}src={ele.imagen} alt="" />
+        </div>
+     <div className="info">
+     <h1 className='name-producto '>{ele.nombre}</h1>
+     <h1 className='price-producto'>R $ {ele.precio}</h1>
+     </div>
+    <button className='comprar'>Comprar</button>
+ </div>
+
+))
+} 
 </MainStyle>
 </>
     )

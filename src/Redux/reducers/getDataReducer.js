@@ -11,10 +11,7 @@ export const getDataReducer = (state = [], action) => {
         return {
          data: action.payload,
         };
-        case types.filtro:
-          return {
-           data: action.payload,
-          };
+      
       default:
         return state;
     }
